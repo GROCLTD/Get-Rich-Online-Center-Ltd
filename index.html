@@ -1,1 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>MUGISHA DIDIER | Forex Trading Platform</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #07111f;
+    color: white;
+}
+
+header {
+    padding: 22px;
+    background: #0d1b2d;
+    text-align: center;
+    border-bottom: 1px solid #26364a;
+}
+
+header h1 {
+    color: #3b82f6;
+    margin: 0;
+}
+
+header p {
+    margin-bottom: 0;
+}
+
+nav {
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+}
+
+section {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+.card {
+    background: #0d1b2d;
+    padding: 25px;
+    margin: 20px auto;
+    border: 1px solid #26364a;
+    border-radius: 12px;
+    max-width: 500px;
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 7px;
+    border: 1px solid #26364a;
+    background: #07111f;
+    color: white;
+}
+
+button {
+    background: #3b82f6;
+    color: white;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin: 6px;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+.hidden {
+    display: none;
+}
+
+#message {
+    color: #60a5fa;
+    overflow-wrap: anywhere;
+}
+
+footer {
+    background: #0d1b2d;
+    padding: 30px 15px;
+    text-align: center;
+    line-height: 1.8;
+    border-top: 1px solid #26364a;
+}
+</style>
+</head>
+
+<body>
+
+<!-- WEBSITE HEADER -->
+<header>
+    <h1>MUGISHA DIDIER</h1>
+    <p>LAYERING AND SCALPING STRATEGIES</p>
+    <small>A product of GET RICH ONLINE CENTER LTD</small>
+</header>
+
+<!-- WEBSITE NAVIGATION -->
+<nav>
+    <a href="#home">Home</a>
+    <a href="#strategies">Strategies</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#access">Client Access</a>
+</nav>
+
+<!-- HOME SECTION -->
+<section id="home">
+    <h2>WELCOME TO OUR FOREX TRADING PLATFORM</h2>
+    <p>
+        Access professional Forex trading strategies
+        powered by MetaTrader 5 Expert Advisors.
+    </p>
+    <a href="#access">
+        <button>CLIENT LOGIN</button>
+    </a>
+</section>
+
+<!-- STRATEGIES SECTION -->
+<section id="strategies">
+    <h2>OUR TRADING STRATEGIES</h2>
+
+    <div class="card">
+        <h3>Layering Strategies</h3>
+        <p>Automated trading strategies designed for MT5.</p>
+    </div>
+
+    <div class="card">
+        <h3>Scalping Strategies</h3>
+        <p>Trading strategies designed for short-term opportunities.</p>
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+    <h2>ABOUT US</h2>
+    <p>
+        MUGISHA DIDIER | LAYERING AND SCALPING STRATEGIES
+    </p>
+    <p>GET RICH ONLINE CENTER LTD</p>
+</section>
+
+<!-- CLIENT REGISTRATION AND LOGIN -->
+<section id="access">
+    <h2>CLIENT ACCESS</h2>
+
+    <div class="card" id="auth_area">
+
+        <h3>Create Your Account</h3>
+
+        <input
+            type="text"
+            id="full_name"
+            placeholder="Full Name"
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+
+        <p id="message"></p>
+
+    </div>
+
+    <!-- CLIENT DASHBOARD -->
+    <div class="card hidden" id="client_dashboard">
+
+        <h2>CLIENT DASHBOARD</h2>
+
+        <p id="client_email"></p>
+
+        <h3>Your Trading Accounts</h3>
+        <p>Coming Soon</p>
+
+        <h3>Available Strategies</h3>
+        <p>Coming Soon</p>
+
+        <h3>Trading Performance</h3>
+        <p>Coming Soon</p>
+
+        <button onclick="logout()">Logout</button>
+
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact">
+    <h2>CONTACT US</h2>
+
+    <p>Email: get.rich.online.center@gmail.com</p>
+
+    <p>WhatsApp: +250 786 133 020</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    COPYRIGHT © 2021–2026 MUGISHA DIDIER |
+    LAYERING SCALPING STRATEGIES
+    <br>
+    GET RICH ONLINE CENTER LTD |
+    ALL RIGHTS RESERVED
+</footer>
+
+<script>
+
+// SUPABASE CONNECTION
+const SUPABASE_URL = "https://oagcymvgmxuwcvejtgdw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tqEEjhYq9iW9paiXkf89cQ_UAaBh-9A";
+
+  const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+// DISPLAY MESSAGE
+function showMessage(message) {
+    document.getElementById("message").textContent = message;
+}
+
+// CLIENT REGISTRATION
+async function register() {
+
+    const fullName = document.getElementById("full_name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!fullName || !email || !password) {
+        showMessage("Please complete all fields.");
+        return;
+    }
+
+    const { data, error } = await db.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                full_name: fullName
+            }
+        }
+    });
+
+    if (error) {
+        showMessage(error.message);
+        return;
+    }
+
+    showMessage(
+        "Registration successful. Please check your email for verification."
+    );
+}
+
+// CLIENT LOGIN
+async function login() {
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+        showMessage("Enter your email and password.");
+        return;
+    }
+
+    const
