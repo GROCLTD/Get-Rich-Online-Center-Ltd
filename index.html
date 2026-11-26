@@ -437,8 +437,8 @@ footer {
 
         </div>
 
-        <button onclick="alert('BUTTON WORKS'); openAccountPage()">
-    REGISTER
+        <button onclick="openAccountPage()">
+         REGISTER
         </button>
 
     </div>
@@ -615,7 +615,95 @@ function closeAccountPage() {
 // ========================================
 // CLIENT REGISTRATION
 // ========================================
+
 async function register() {
 
     const fullName =
-        document
+        document.getElementById("full_name").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if (!fullName || !email || !password) {
+        showMessage("Please fill in all fields.");
+        return;
+    }
+
+    const { data, error } = await db.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                full_name: fullName
+            }
+        }
+    });
+
+    if (error) {
+        showMessage(error.message);
+        return;
+    }
+
+    showMessage("Registration successful. Please check your email.");
+}
+
+
+// ========================================
+// CLIENT LOGIN
+// ========================================
+
+async function login() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const { data, error } = await db.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        showMessage(error.message);
+        return;
+    }
+
+    document.getElementById("account_page").classList.add("hidden");
+
+    const dashboard =
+        document.getElementById("client_dashboard");
+
+    if (dashboard) {
+        dashboard.classList.remove("hidden");
+    }
+
+    window.scrollTo(0, 0);
+}
+
+
+// ========================================
+// CLIENT LOGOUT
+// ========================================
+
+async function logout() {
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+        showMessage(error.message);
+        return;
+    }
+
+    document.getElementById("client_dashboard").classList.add("hidden");
+
+    document.querySelector(".main-header").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+}
+
+</script>
