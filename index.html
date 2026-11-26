@@ -471,17 +471,17 @@ footer {
 
 </section>
 
-<!-- FOOTER -->
 <footer>
-
-    <p>
-        COPYRIGHT © 2021–2026 MUGISHA DIDIER|LAYERING SCALPING STRATEGIES
-        GET RICH ONLINE CENTER LTD | ALL RIGHTS RESERVED 
-    </p>
-
+    COPYRIGHT © 2021–<span id="year"></span>
+    MUGISHA DIDIER | LAYERING SCALPING STRATEGIES
+    GET RICH ONLINE CENTER LTD |
+    ALL RIGHTS RESERVED
 </footer>
 
 <script>
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+</script>
 
 // ========================================
 // SUPABASE CONNECTION
