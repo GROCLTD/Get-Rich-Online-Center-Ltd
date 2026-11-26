@@ -260,8 +260,40 @@ footer {
     display: block;
     text-align: center;
 }
-    
+
+/* ACCOUNT PAGE DESIGN */
+#account_page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 15px;
+    background: #07111f;
+}
+
+#account_page.hidden {
+    display: none;
+}
+
+.account-container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.account-logo img {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+#account_page #auth_area {
+    width: 100%;
+    margin: 0 auto;
+}
 </style>
+    
 </head>
 
 <body>
@@ -306,8 +338,8 @@ footer {
     <a href="#strategies">Strategies</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
-    <a href="#access">LOGIN</a>
-    <a href="#access">Register</a>
+    <a href="javascript:void(0)" onclick="openAccountPage()">LOGIN</a>
+    <a href="javascript:void(0)" onclick="openAccountPage()">Register</a>
     
 </nav>
 
@@ -377,35 +409,38 @@ footer {
 <!-- CLIENT REGISTRATION AND LOGIN -->
 <section id="access">
 
-    <div class="card" id="auth_area">
+    <!-- ACCOUNT PAGE -->
+<section id="account_page" class="hidden">
 
-        <h3>Create Your Account</h3>
+    <div class="account-container">
 
-        <input
-            type="text"
-            id="full_name"
-            placeholder="Full Name"
-        >
+        <div class="account-logo">
+            <img src="Get%20Rich%20Online%20Center.png"
+                 alt="GET RICH ONLINE CENTER LTD">
+        </div>
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Email Address"
-        >
+        <div class="card" id="auth_area">
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-        >
+            <h3>Create Your Account</h3>
 
-        <button onclick="register()">Register</button>
+            <input type="text" id="full_name"
+                   placeholder="Full Name">
 
-        <button onclick="login()">Login</button>
+            <input type="email" id="email"
+                   placeholder="Email Address">
 
-        <p id="message"></p>
+            <input type="password" id="password"
+                   placeholder="Password">
 
-    </div>
+            <button onclick="register()">Create Account</button>
+
+            <button onclick="login()">Login</button>
+
+            <p id="message"></p>
+
+        </div>
+
+</section>
 
     <!-- CLIENT DASHBOARD -->
     <div class="card hidden" id="client_dashboard">
@@ -488,7 +523,6 @@ footer {
 // ========================================
 // SUPABASE CONNECTION
 // ========================================
-
 const SUPABASE_URL =
 "https://oagcymvgmxuwcvejtgdw.supabase.co";
 
@@ -504,7 +538,6 @@ const db = supabase.createClient(
 // ========================================
 // DISPLAY MESSAGE
 // ========================================
-
 function showMessage(message) {
 
     document.getElementById("message").textContent = message;
@@ -515,7 +548,6 @@ function showMessage(message) {
 // ========================================
 // NAVIGATION MENU
 // ========================================
-
 function toggleMenu(event) {
 
     event.stopPropagation();
@@ -543,11 +575,25 @@ document.addEventListener("click", function(event) {
 
 });
 
+// ========================================
+// OPEN ACCOUNT PAGE
+// ========================================
+function openAccountPage() {
 
+    document.querySelectorAll("body > section").forEach(section => {
+        section.classList.add("hidden");
+    });
+
+    document.querySelector(".main-header").classList.add("hidden");
+
+    document.getElementById("account_page").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+}
+    
 // ========================================
 // CLIENT REGISTRATION
 // ========================================
-
 async function register() {
 
     const fullName =
