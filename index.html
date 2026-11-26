@@ -472,13 +472,15 @@ footer {
 </section>
 
 <footer>
-    COPYRIGHT © 2021–<span id="year"></span>
-    ALL RIGHTS RESERVED
+    Copyright © 2021–<span id="year"></span>
+    All Rights Reserved 
 </footer>
 
 <script>
+    window.addEventListener("DOMContentLoaded", function() {
     document.getElementById("year").textContent =
-    new Date().getFullYear();
+        new Date().getFullYear();
+});
 
 // ========================================
 // SUPABASE CONNECTION
