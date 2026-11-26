@@ -20,31 +20,62 @@ body {
     color: white;
 }
 
-header {
-    padding: 22px;
-    background: #0d1b2d;
-    text-align: center;
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    background: #0b192b;
     border-bottom: 1px solid #26364a;
+    gap: 15px;
 }
 
-header h1 {
+.company-logo {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    background: white;
+    border-radius: 8px;
+}
+
+.header-title {
+    flex: 1;
+    text-align: center;
+}
+
+.header-title h1 {
     color: #3b82f6;
+    font-size: 22px;
+    margin: 0 0 6px;
+}
+
+.header-title p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.header-title small {
+    font-size: 11px;
+}
+
+.menu-button {
+    font-size: 30px;
+    background: transparent;
+    padding: 5px;
     margin: 0;
 }
 
-header p {
-    margin-bottom: 0;
-}
-
-nav {
+#main-menu {
+    background: #0d1b2d;
     padding: 15px;
     text-align: center;
 }
 
-nav a {
+#main-menu a {
+    display: block;
+    padding: 12px;
     color: white;
     text-decoration: none;
-    margin: 10px;
 }
 
 section {
@@ -74,7 +105,9 @@ input {
     color: white;
 }
 
-button {
+button,
+.button {
+    display: inline-block;
     background: #3b82f6;
     color: white;
     padding: 13px 22px;
@@ -82,14 +115,16 @@ button {
     border-radius: 7px;
     cursor: pointer;
     margin: 6px;
+    text-decoration: none;
 }
 
-button:hover {
+button:hover,
+.button:hover {
     background: #2563eb;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #message {
@@ -121,20 +156,51 @@ footer {
     line-height: 1.8;
     border-top: 1px solid #26364a;
 }
+
+@media(max-width: 480px) {
+    .company-logo {
+        width: 65px;
+        height: 65px;
+    }
+
+    .header-title h1 {
+        font-size: 16px;
+    }
+
+    .header-title p {
+        font-size: 11px;
+    }
+
+    .header-title small {
+        font-size: 9px;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <!-- WEBSITE HEADER -->
-<header>
-    <h1>MUGISHA DIDIER</h1>
-    <p>LAYERING AND SCALPING STRATEGIES</p>
-    <small>A product of GET RICH ONLINE CENTER LTD</small>
+<header class="main-header">
+
+    <img
+        src="Get%20Rich%20Online%20Center%20Profile%20Photo.png"
+        alt="GET RICH ONLINE CENTER LTD Logo"
+        class="company-logo"
+    >
+
+    <div class="header-title">
+        <h1>MUGISHA DIDIER</h1>
+        <p>LAYERING AND SCALPING STRATEGIES</p>
+        <small>A product of GET RICH ONLINE CENTER LTD</small>
+    </div>
+
+    <button class="menu-button" onclick="toggleMenu(event)">☰</button>
+
 </header>
 
-<!-- WEBSITE NAVIGATION -->
-<nav>
+<!-- NAVIGATION MENU -->
+<nav id="main-menu" class="hidden">
     <a href="#home">Home</a>
     <a href="#strategies">Strategies</a>
     <a href="#about">About</a>
@@ -144,18 +210,23 @@ footer {
 
 <!-- HOME SECTION -->
 <section id="home">
+
     <h2>WELCOME TO OUR FOREX TRADING PLATFORM</h2>
+
     <p>
         Access professional Forex trading strategies
         powered by MetaTrader 5 Expert Advisors.
     </p>
+
     <a href="#access">
         <button>CLIENT LOGIN</button>
     </a>
+
 </section>
 
 <!-- STRATEGIES SECTION -->
 <section id="strategies">
+
     <h2>OUR TRADING STRATEGIES</h2>
 
     <div class="card">
@@ -167,19 +238,23 @@ footer {
         <h3>Scalping Strategies</h3>
         <p>Trading strategies designed for short-term opportunities.</p>
     </div>
+
 </section>
 
 <!-- ABOUT SECTION -->
 <section id="about">
+
     <h2>ABOUT US</h2>
-    <p>
-        MUGISHA DIDIER | LAYERING AND SCALPING STRATEGIES
-    </p>
+
+    <p>MUGISHA DIDIER | LAYERING AND SCALPING STRATEGIES</p>
+
     <p>GET RICH ONLINE CENTER LTD</p>
+
 </section>
 
 <!-- CLIENT REGISTRATION AND LOGIN -->
 <section id="access">
+
     <h2>CLIENT ACCESS</h2>
 
     <div class="card" id="auth_area">
@@ -205,6 +280,7 @@ footer {
         >
 
         <button onclick="register()">Register</button>
+
         <button onclick="login()">Login</button>
 
         <p id="message"></p>
@@ -215,6 +291,8 @@ footer {
     <div class="card hidden" id="client_dashboard">
 
         <h2>CLIENT DASHBOARD</h2>
+
+        <p>Welcome to your account.</p>
 
         <p id="client_email"></p>
 
@@ -227,14 +305,19 @@ footer {
         <h3>Trading Performance</h3>
         <p>Coming Soon</p>
 
+        <h3>Payments</h3>
+        <p>Coming Soon</p>
+
         <button onclick="logout()">Logout</button>
 
     </div>
+
 </section>
 
 <!-- CONTACT SECTION -->
-  <section class="contact" id="contact">
-    <h2 class="section-title">Contact Us</h2>
+<section class="contact" id="contact">
+
+    <h2>CONTACT US</h2>
 
     <p>
         Interested in our Forex trading strategies?
@@ -246,9 +329,12 @@ footer {
         +250 786 133 020
     </p>
 
-    <a href="https://wa.me/250786133020"
-       class="button" target="_blank">
-       Contact Us on WhatsApp
+    <a
+        href="https://wa.me/250786133020"
+        class="button"
+        target="_blank"
+    >
+        Contact Us on WhatsApp
     </a>
 
     <p style="margin-top:25px;">
@@ -256,91 +342,106 @@ footer {
         get.rich.online.center@gmail.com
     </p>
 
-    <a href="mailto:get.rich.online.center@gmail.com"
-       class="button">
-       Send Us an Email
+    <a
+        href="mailto:get.rich.online.center@gmail.com"
+        class="button"
+    >
+        Send Us an Email
     </a>
 
     <div class="warning">
+
         <strong>Risk Disclaimer:</strong>
-        Forex and CFD trading involve significant risk and may
-        result in the loss of your invested capital.
+
+        Forex and CFD trading involve significant risk
+        and may result in the loss of your invested capital.
         Past performance does not guarantee future results.
         No profits or returns are guaranteed.
+
     </div>
-  </section>
+
+</section>
 
 <!-- FOOTER -->
 <footer>
+
     <p>
         COPYRIGHT © 2021–2026 MUGISHA DIDIER |
         LAYERING SCALPING STRATEGIES
     </p>
 
     <p>
-        GET RICH ONLINE CENTER LTD |
-        ALL RIGHTS RESERVED
+        GET RICH ONLINE CENTER LTD | ALL RIGHTS RESERVED
     </p>
+
 </footer>
-    
+
 <script>
 
+// ========================================
 // SUPABASE CONNECTION
-const SUPABASE_URL = "https://oagcymvgmxuwcvejtgdw.supabase.co";
+// ========================================
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tqEEjhYq9iW9paiXkf89cQ_UAaBh-9A";
+const SUPABASE_URL =
+"https://oagcymvgmxuwcvejtgdw.supabase.co";
 
-  const db = supabase.createClient(
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_tqEEjhYq9iW9paiXkf89cQ_UAaBh-9A";
+
+const db = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
 
+
+// ========================================
 // DISPLAY MESSAGE
+// ========================================
+
 function showMessage(message) {
+
     document.getElementById("message").textContent = message;
+
 }
 
+
+// ========================================
+// NAVIGATION MENU
+// ========================================
+
+function toggleMenu(event) {
+
+    event.stopPropagation();
+
+    const menu = document.getElementById("main-menu");
+
+    menu.classList.toggle("hidden");
+
+}
+
+document.addEventListener("click", function(event) {
+
+    const menu = document.getElementById("main-menu");
+
+    const button = document.querySelector(".menu-button");
+
+    if (
+        !menu.contains(event.target) &&
+        !button.contains(event.target)
+    ) {
+
+        menu.classList.add("hidden");
+
+    }
+
+});
+
+
+// ========================================
 // CLIENT REGISTRATION
+// ========================================
+
 async function register() {
 
-    const fullName = document.getElementById("full_name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
-    if (!fullName || !email || !password) {
-        showMessage("Please complete all fields.");
-        return;
-    }
-
-    const { data, error } = await db.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-            data: {
-                full_name: fullName
-            }
-        }
-    });
-
-    if (error) {
-        showMessage(error.message);
-        return;
-    }
-
-    showMessage(
-        "Registration successful. Please check your email for verification."
-    );
-}
-
-// CLIENT LOGIN
-async function login() {
-
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
-    if (!email || !password) {
-        showMessage("Enter your email and password.");
-        return;
-    }
-
-    const
+    const fullName =
+        document
