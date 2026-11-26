@@ -24,23 +24,63 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 25px;
+    padding: 15px 20px;
     background: #0b192b;
     border-bottom: 1px solid #26364a;
     gap: 15px;
 }
 
-.company-logo {
-    width: 85px;
-    height: 85px;
-    object-fit: contain;
-    background: white;
-    border-radius: 8px;
+.brand-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.header-title {
-    flex: 1;
-    text-align: center;
+.company-logo {
+    width: 100px;
+    height: 55px;
+    object-fit: contain;
+    background: transparent;
+    border-radius: 0;
+}
+
+.brand-name {
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-button {
+    border: 1px solid #3b82f6;
+    background: transparent;
+    color: white;
+    padding: 10px 15px;
+}
+
+.menu-button {
+    font-size: 30px;
+    background: transparent;
+    padding: 5px;
+    margin: 0;
+}
+
+@media(max-width:480px) {
+    .company-logo {
+        width: 85px;
+        height: 48px;
+    }
+
+    .brand-name {
+        font-size: 8px;
+    }
 }
 
 .header-title h1 {
@@ -197,19 +237,34 @@ footer {
 <!-- WEBSITE HEADER -->
 <header class="main-header">
 
-    <img
-        src="Get%20Rich%20Online%20Center%20Profile%20Photo.png"
-        alt="GET RICH ONLINE CENTER LTD Logo"
-        class="company-logo"
-    >
+    <div class="brand-block">
 
-    <div class="header-title">
-        <h1>MUGISHA DIDIER</h1>
-        <p>LAYERING AND SCALPING STRATEGIES</p>
-        <small>A product of GET RICH ONLINE CENTER LTD</small>
+        <img
+            src="Get%20Rich%20Online%20Center%20Profile%20Photo.png"
+            alt="GET RICH ONLINE CENTER LTD"
+            class="company-logo"
+        >
+
+        <div class="brand-name">
+            GET RICH ONLINE CENTER LTD
+        </div>
+
     </div>
 
-    <button class="menu-button" onclick="toggleMenu(event)">☰</button>
+    <div class="header-actions">
+
+        <a href="#access">
+            <button class="login-button">
+                CLIENT LOGIN
+            </button>
+        </a>
+
+        <button class="menu-button"
+                onclick="toggleMenu(event)">
+            ☰
+        </button>
+
+    </div>
 
 </header>
 
