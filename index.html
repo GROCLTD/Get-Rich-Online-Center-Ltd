@@ -73,22 +73,24 @@ body {
 
 .header-actions {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
 }
 
 .login-button {
-    border: 1px solid #3b82f6;
-    background: transparent;
-    color: white;
-    padding: 10px 15px;
+    padding: 8px 10px;
+    font-size: 11px;
+    margin: 0;
 }
 
 .menu-button {
-    font-size: 30px;
-    background: transparent;
+    font-size: 26px;
     padding: 5px;
     margin: 0;
+    line-height: 1;
 }
 
 @media(max-width:480px) {
