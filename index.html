@@ -440,6 +440,12 @@ footer {
 
         </div>
 
+        <button onclick="closeAccountPage()">
+            BACK TO HOME
+        </button>
+
+    </div>
+
 </section>
 
     <!-- CLIENT DASHBOARD -->
@@ -587,6 +593,24 @@ function openAccountPage() {
     document.querySelector(".main-header").classList.add("hidden");
 
     document.getElementById("account_page").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+}
+
+// ========================================
+// BACK TO HOME
+// ========================================
+function closeAccountPage() {
+
+    document.getElementById("account_page").classList.add("hidden");
+
+    document.querySelector(".main-header").classList.remove("hidden");
+
+    document.querySelectorAll("body > section").forEach(section => {
+        if (section.id !== "account_page") {
+            section.classList.remove("hidden");
+        }
+    });
 
     window.scrollTo(0, 0);
 }
