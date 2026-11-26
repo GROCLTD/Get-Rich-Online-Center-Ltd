@@ -437,8 +437,8 @@ footer {
 
         </div>
 
-        <button onclick="closeAccountPage()">
-            BACK TO HOME
+        <button onclick="alert('BUTTON WORKS'); openAccountPage()">
+    REGISTER
         </button>
 
     </div>
@@ -582,7 +582,7 @@ document.addEventListener("click", function(event) {
 // OPEN ACCOUNT PAGE
 // ========================================
 function openAccountPage() {
-alert("REGISTER BUTTON WORKS");
+    
     document.querySelectorAll("body > section").forEach(section => {
         section.classList.add("hidden");
     });
