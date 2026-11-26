@@ -412,48 +412,58 @@ footer {
 
 </section>
     
-    <!-- ACCOUNT PAGE Register-->
-<section id="account_page" class="hidden">
-
-    <header class="main-header">
+    <!-- ACCOUNT PAGE HEADER -->
+<header class="main-header hidden" id="account_header">
 
     <div class="brand-block">
 
-        <img 
+        <img
             src="Get%20Rich%20Online%20Center.png"
             alt="GET RICH ONLINE CENTER LTD"
-            class="company-logo" >
+            class="company-logo"
+        >
 
         <div class="brand-name">
             GET RICH ONLINE CENTER LTD
         </div>
 
-     </div>
+    </div>
 
- </header>
-    
- <section>
-     
+</header>
+
+
+<!-- ACCOUNT PAGE -->
+<section id="account_page" class="hidden">
+
     <div class="card" id="auth_area">
 
         <h3>Create Your Account</h3>
 
-        <input type="text" id="full_name"
-               placeholder="Full Name">
+        <input
+            type="text"
+            id="full_name"
+            placeholder="Full Name"
+        >
 
-        <input type="email" id="email"
-               placeholder="Email Address">
+        <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+        >
 
-        <input type="password" id="password"
-               placeholder="Password">
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
-        <button onclick="register()">Create Account</button>
+        <button onclick="register()">
+            Create Account
+        </button>
 
         <p id="message"></p>
 
     </div>
-     
-  </section>
 
     <!-- CLIENT DASHBOARD -->
     <div class="card hidden" id="client_dashboard">
@@ -551,12 +561,14 @@ document.addEventListener("click", function(event) {
 // OPEN ACCOUNT PAGE
 // ========================================
 function openAccountPage() {
-    
+
     document.querySelectorAll("body > section").forEach(section => {
         section.classList.add("hidden");
     });
 
     document.querySelector(".main-header").classList.add("hidden");
+
+    document.getElementById("account_header").classList.remove("hidden");
 
     document.getElementById("account_page").classList.remove("hidden");
 
