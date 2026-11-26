@@ -282,9 +282,8 @@ footer {
 
 .account-container {
     width: 100%;
-    max-width: 420px;
+    max-width: none;
     text-align: left;
-    align-items: flex-start;
 }
 
 #account_page #auth_area {
@@ -406,47 +405,45 @@ footer {
 </section>
 
     <!-- ACCOUNT PAGE -->
+<sec<!-- ACCOUNT PAGE -->
 <section id="account_page" class="hidden">
 
-    <div class="account-container">
+    <header class="main-header">
 
-        <div class="brand-block account-brand">
+        <div class="brand-block">
 
-    <img
-        src="Get%20Rich%20Online%20Center.png"
-        alt="GET RICH ONLINE CENTER LTD"
-        class="company-logo"
-    >
+            <img
+                src="Get%20Rich%20Online%20Center.png"
+                alt="GET RICH ONLINE CENTER LTD"
+                class="company-logo"
+            >
 
-    <div class="brand-name">
-        GET RICH ONLINE CENTER LTD
-    </div>
-
-        </div>
-
-        <div class="card" id="auth_area">
-
-            <h3>Create Your Account</h3>
-
-            <input type="text" id="full_name"
-                   placeholder="Full Name">
-
-            <input type="email" id="email"
-                   placeholder="Email Address">
-
-            <input type="password" id="password"
-                   placeholder="Password">
-
-            <button onclick="register()">Create Account</button>
-
-            <button onclick="login()">Login</button>
-
-            <p id="message"></p>
+            <div class="brand-name">
+                GET RICH ONLINE CENTER LTD
+            </div>
 
         </div>
 
-    </div>
+    </header>
 
+    <div class="card" id="auth_area">
+
+        <h3>Create Your Account</h3>
+
+        <input type="text" id="full_name"
+               placeholder="Full Name">
+
+        <input type="email" id="email"
+               placeholder="Email Address">
+
+        <input type="password" id="password"
+               placeholder="Password">
+
+        <button onclick="register()">Create Account</button>
+
+        <p id="message"></p>
+
+    </div>
 </section>
 
     <!-- CLIENT DASHBOARD -->
