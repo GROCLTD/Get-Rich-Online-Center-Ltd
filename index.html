@@ -604,7 +604,8 @@ function displayPage(pageId, headerId = "") {
 // ========================================
 window.addEventListener("popstate", function(event) {
 
-    if (event.state && event.state.pageId) {
+    if (event.state && event.state.pageId &&
+        event.state.pageId !== "home") {
 
         displayPage(
             event.state.pageId,
@@ -617,7 +618,6 @@ window.addEventListener("popstate", function(event) {
         sessionStorage.removeItem("activeHeader");
 
         document.getElementById("account_page").classList.add("hidden");
-
         document.getElementById("account_header").classList.add("hidden");
 
         document.querySelector(".main-header").classList.remove("hidden");
@@ -632,7 +632,6 @@ window.addEventListener("popstate", function(event) {
     }
 
 });
-
 
 // ========================================
 // OPEN ACCOUNT PAGE
@@ -735,7 +734,6 @@ async function register() {
 // ========================================
 // CLIENT LOGIN
 // ========================================
-
 async function login() {
 
     const email =
@@ -770,7 +768,6 @@ async function login() {
 // ========================================
 // CLIENT LOGOUT
 // ========================================
-
 async function logout() {
 
     const { error } = await db.auth.signOut();
