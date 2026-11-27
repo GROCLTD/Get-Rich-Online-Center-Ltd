@@ -141,26 +141,40 @@ section {
 .section-card {
     background: #0d1b2d;
     border: 2px solid #26364a;
-    border-radius: 25px;
-    padding: 40px 30px;
+    border-radius: 20px;
+    padding: 30px;
     text-align: center;
 }
 
-/* STRATEGY CARDS */
+/* CARD SIZES */
 .card {
     max-width: 500px;
     margin: 20px auto;
-    background: #0d1b2d;
-    border: 2px solid #26364a;
-    border-radius: 15px;
-    padding: 25px;
 }
 
-/* ABOUT AND CONTACT CARDS */
 .section-card {
     max-width: 1000px;
     margin: 10px auto;
     min-height: 300px;
+}
+
+/* LOGIN AND REGISTER SWITCH */
+.auth-switch {
+    margin-top: 20px;
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.auth-switch a {
+    color: #3b82f6;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
 }
     
 input {
@@ -456,11 +470,16 @@ footer {
             placeholder="Password"
         >
 
-        <button onclick="register()">
-            Create Account
-        </button>
+        <button onclick="register()">Create Account</button>
 
-        <p id="message"></p>
+      <p class="auth-switch">
+         Already have an account?
+        <a href="#" onclick="openPage('login_page', 'login_header'); return false;">
+           Login
+        </a>
+     </p>
+
+      <p id="message"></p>
 
     </div>
 
@@ -533,9 +552,16 @@ footer {
         <button onclick="login()">LOGIN</button>
         </div>
         
-     <p> 
+     <p>
     <a href="#" onclick="showForgotPassword(); return false;">
         Forgot Password?
+    </a>
+</p>
+
+<p class="auth-switch">
+    Don't have an account?
+    <a href="#" onclick="openPage('account_page', 'account_header'); return false;">
+        Create Account
     </a>
 </p>
 
