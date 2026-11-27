@@ -910,6 +910,19 @@ document.addEventListener("click", function(event) {
 });
 
 // ========================================
+// DASHBOARD SIDEBAR MENU
+// ========================================
+function toggleDashboardMenu(event) {
+
+    event.stopPropagation();
+
+    const sidebar = document.getElementById("dashboard_sidebar");
+
+    sidebar.classList.toggle("hidden");
+
+}
+    
+// ========================================
 // CLOSE DASHBOARD SIDEBAR WHEN CLICKING OUTSIDE
 // ========================================
 document.addEventListener("click", function(event) {
