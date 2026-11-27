@@ -283,7 +283,7 @@ footer {
 
 <!-- WEBSITE HEADER -->
 <header class="main-header">
-    
+
     <div class="brand-block">
 
         <img 
@@ -321,6 +321,7 @@ footer {
 
 <!-- HOME SECTION -->
 <section>
+
     <h2>TRADE GOLD (XAUUSD) WITH US</h2>
 
     <p>
@@ -423,10 +424,8 @@ footer {
     </div>
 
 </section>
-
-</div>
     
-<!-- ACCOUNT PAGE HEADER -->
+    <!-- ACCOUNT PAGE HEADER -->
 <header class="main-header hidden" id="account_header">
 
     <div class="brand-block">
@@ -626,7 +625,7 @@ footer {
     </script>
     All Rights Reserved
 </footer>
-    
+
 <script>
     
 // ========================================
@@ -758,26 +757,19 @@ window.addEventListener("popstate", function(event) {
 
     } else {
 
-        // HIDE ALL SECTIONS
-        document.querySelectorAll("body > section").forEach(section => {
-            section.classList.add("hidden");
-        });
+        sessionStorage.removeItem("activePage");
+        sessionStorage.removeItem("activeHeader");
 
-        // SHOW HOME SECTIONS ONLY
-        document.querySelectorAll(".home-section").forEach(section => {
-            section.classList.remove("hidden");
-        });
+        document.getElementById("account_page").classList.add("hidden");
+        document.getElementById("account_header").classList.add("hidden");
 
-        // HIDE OTHER HEADERS
-        document.querySelectorAll("body > header").forEach(header => {
-            header.classList.add("hidden");
-        });
-
-        // SHOW HOME HEADER
         document.querySelector(".main-header").classList.remove("hidden");
 
-        // SHOW FOOTER
-        document.querySelector("footer").classList.remove("hidden");
+        document.querySelectorAll("body > section").forEach(section => {
+            if (section.id !== "account_page") {
+                section.classList.remove("hidden");
+            }
+        });
 
         window.scrollTo(0, 0);
     }
