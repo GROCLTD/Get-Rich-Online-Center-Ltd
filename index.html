@@ -285,11 +285,9 @@ footer {
 
     <div class="header-actions">
 
-        <a href="#access">
-            <button class="login-button">
-                LOGIN
-            </button>
-        </a>
+        <button class="login-button" onclick="openPage('login_page')">
+        LOGIN
+        </button>
 
         <button class="menu-button"
                 onclick="toggleMenu(event)">
@@ -303,7 +301,7 @@ footer {
 <!-- NAVIGATION MENU -->
 <nav id="main-menu" class="hidden">
     <a href="javascript:void(0)" onclick="openAccountPage()">LOGIN</a>
-    <a href="javascript:void(0)" onclick="openAccountPage()">Register</a>
+    <a href="javascript:void(0)" onclick="openAccountPage()">REGISTER</a>
     
 </nav>
 
@@ -493,7 +491,39 @@ footer {
 
 </section>
 
+    <!-- LOGIN PAGE -->
+    <section id="login_page" class="hidden">
 
+    <div class="card">
+
+        <h2>CLIENT LOGIN</h2>
+
+        <input
+            type="email"
+            id="login_email"
+            placeholder="Email Address"
+        >
+
+        <input
+            type="password"
+            id="login_password"
+            placeholder="Password"
+        >
+
+        <button onclick="login()">LOGIN</button>
+
+        <p>
+            <a href="#" onclick="forgotPassword(); return false;">
+                Forgot Password?
+            </a>
+        </p>
+
+        <p id="login_message"></p>
+
+    </div>
+
+</section>
+    
 <footer>
     Copyright © 2021–<script>
         document.write(new Date().getFullYear());
@@ -737,10 +767,10 @@ async function register() {
 async function login() {
 
     const email =
-        document.getElementById("email").value.trim();
+        document.getElementById("login_email").value.trim();
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById("login_password").value;
 
     const { data, error } = await db.auth.signInWithPassword({
         email: email,
@@ -748,11 +778,14 @@ async function login() {
     });
 
     if (error) {
-        showMessage(error.message);
+        document.getElementById("login_message").textContent =
+            error.message;
         return;
     }
 
-    document.getElementById("account_page").classList.add("hidden");
+    openPage("account_page");
+
+    document.getElementById("auth_area").classList.add("hidden");
 
     const dashboard =
         document.getElementById("client_dashboard");
