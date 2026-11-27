@@ -881,6 +881,40 @@ function closeAccountPage() {
 // ========================================
 function restoreLastPage() {
 
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const hashParams = new URLSearchParams(
+        window.location.hash.replace("#", "")
+    );
+
+    const requestedPage = urlParams.get("page");
+
+    const isAuthCallback =
+        urlParams.has("code") ||
+        urlParams.has("error") ||
+        hashParams.has("access_token") ||
+        hashParams.has("error");
+
+    // EMAIL VERIFICATION
+    if (requestedPage === "login_page") {
+
+        displayPage("login_page", "login_header");
+
+        // Preserve Supabase authentication callback URL
+        if (isAuthCallback) return;
+
+        history.replaceState(
+            { pageId: "login_page", headerId: "login_header" },
+            "",
+            "#login_page"
+        );
+
+        return;
+    }
+
+    // PRESERVE PASSWORD RECOVERY CALLBACK
+    if (isAuthCallback) return;
+
     const pageId = sessionStorage.getItem("activePage");
     const headerId = sessionStorage.getItem("activeHeader") || "";
 
