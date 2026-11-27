@@ -407,7 +407,7 @@ footer {
 </nav>
 
 <!-- HOME SECTION -->
-<section>
+<section class="home-section">
 
     <h2>TRADE GOLD (XAUUSD) WITH US</h2>
 
@@ -423,7 +423,7 @@ footer {
 </section>
 
 <!-- STRATEGIES SECTION -->
-<section id="strategies">
+<section id="strategies" class="home-section">
     
     <div class="card">
     
@@ -447,7 +447,7 @@ footer {
 </section>
 
 <!-- ABOUT SECTION -->
-<section id="about">
+<section id="about" class="home-section">
     <div class="section-card">
         <h2>ABOUT US</h2>
 
@@ -471,7 +471,7 @@ footer {
 </section>
 
 <!-- CONTACT SECTION -->
-<section class="contact">
+<section class="contact home-section">
 
     <div class="section-card">
 
@@ -1006,11 +1006,9 @@ window.addEventListener("popstate", function(event) {
             section.classList.add("hidden");
         });
 
-        // SHOW PUBLIC HOME SECTIONS ONLY
-        document.querySelectorAll(
-            "body > section:not(#account_page):not(#login_page):not(#reset_password_page)"
-        ).forEach(section => {
-            section.classList.remove("hidden");
+        // SHOW ALL HOME SECTIONS
+        document.querySelectorAll("body > section.home-section").forEach(section => {
+        section.classList.remove("hidden");
         });
 
         // HIDE ALL HEADERS
