@@ -890,13 +890,25 @@ async function register() {
         }
     });
 
-    if (error) {
+        if (error) {
         showMessage(error.message);
         return;
     }
 
+    // CHECK EXISTING EMAIL
+    if (
+        data.user &&
+        data.user.identities &&
+        data.user.identities.length === 0
+    ) {
+        showMessage(
+            "This email already has an account. Please log in or reset your password."
+        );
+        return;
+    }
+
     showMessage("Registration successful. Please verify your email.");
-}
+    }
 
 // ========================================
 // CLIENT LOGIN
