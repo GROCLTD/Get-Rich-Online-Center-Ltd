@@ -550,7 +550,11 @@ footer {
     <button onclick="forgotPassword()">
         RESET PASSWORD
     </button>
-
+    
+<button type="button" onclick="backToLogin()">
+    BACK TO LOGIN
+</button>
+    
 </div>
 
         <p id="login_message"></p>
@@ -626,8 +630,7 @@ db.auth.onAuthStateChange((event, session) => {
 
         sessionStorage.setItem("activeHeader", "");
 
-        openPage("reset_password_page");
-
+        openPage("reset_password_page", "login_header");
     }
 
 });
@@ -896,6 +899,22 @@ function showForgotPassword() {
         .classList.remove("hidden");
 
     }
+
+// ========================================
+// BACK TO LOGIN
+// ========================================
+function backToLogin() {
+
+    document.getElementById("forgot_password_area")
+        .classList.add("hidden");
+
+    document.getElementById("login_form")
+        .classList.remove("hidden");
+
+    document.querySelector("#login_page a")
+        .parentElement.classList.remove("hidden");
+
+}
 
 // ========================================
 // FORGOT PASSWORD
