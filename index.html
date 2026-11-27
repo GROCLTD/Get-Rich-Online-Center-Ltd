@@ -123,7 +123,7 @@ body {
     right: 0;
     left: auto;
     bottom: 0;
-    width: 100px;
+    width: 180px;
     background: #0b192b;
     border-left: 1px solid #26364a;
     padding: 20px 12px;
@@ -434,8 +434,9 @@ footer {
         </button>
 
         <button class="menu-button"
-                onclick="toggleMenu(event)">
-            ☰
+        id="home_menu_button"
+        onclick="toggleMenu(event)">
+        ☰
         </button>
 
     </div>
@@ -814,12 +815,13 @@ footer {
 
     <div class="header-actions">
 
-        <button
-            class="menu-button"
-            onclick="toggleDashboardMenu(event)"
-        >
-            ☰
-        </button>
+    <button
+         class="menu-button"
+         id="dashboard_menu_button"
+         onclick="toggleDashboardMenu(event)"
+     >
+     ☰
+     </button>
 
     </div>
 
@@ -961,39 +963,39 @@ document.addEventListener("click", function(event) {
 // CLOSE HOME MENU WHEN A MENU ITEM IS SELECTED
 function closeHomeMenu() {
     document.getElementById("main-menu").classList.add("hidden");
-}
+    }
     
-// ========================================
-// DASHBOARD LOGIN SIDEBAR MENU
-// ========================================
-function toggleDashboardMenu(event) {
+// UPDATE MENU ICON
+function updateMenuIcon(buttonId, isOpen) {
+    document.getElementById(buttonId).textContent =
+        isOpen ? "×" : "☰";
+}
 
+// HOME MENU
+function toggleMenu(event) {
+    event.stopPropagation();
+
+    const menu = document.getElementById("main-menu");
+    menu.classList.toggle("hidden");
+
+    updateMenuIcon(
+        "home_menu_button",
+        !menu.classList.contains("hidden")
+    );
+}
+
+// DASHBOARD MENU
+function toggleDashboardMenu(event) {
     event.stopPropagation();
 
     const sidebar = document.getElementById("dashboard_sidebar");
-
     sidebar.classList.toggle("hidden");
 
+    updateMenuIcon(
+        "dashboard_menu_button",
+        !sidebar.classList.contains("hidden")
+    );
 }
-
-// ========================================
-// CLOSE DASHBOARD SIDEBAR
-// ========================================
-document.addEventListener("click", function(event) {
-
-    const sidebar = document.getElementById("dashboard_sidebar");
-    const button = document.querySelector("#dashboard_header .menu-button");
-
-    if (
-        !sidebar.contains(event.target) &&
-        !button.contains(event.target)
-    ) {
-
-        sidebar.classList.add("hidden");
-
-    }
-
-});
     
 // ========================================
 // GENERAL PAGE NAVIGATION
