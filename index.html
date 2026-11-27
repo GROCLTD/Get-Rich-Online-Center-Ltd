@@ -849,7 +849,7 @@ db.auth.onAuthStateChange((event, session) => {
     const urlParams = new URLSearchParams(window.location.search);
 
     if (
-        event === "SIGNED_IN" &&
+        (event === "SIGNED_IN" || event === "INITIAL_SESSION") &&
         session &&
         session.user.email_confirmed_at &&
         urlParams.get("page") === "login_page"
@@ -858,7 +858,7 @@ db.auth.onAuthStateChange((event, session) => {
         openPage("login_page", "login_header");
 
         document.getElementById("login_message").textContent =
-            "Email verified successfully. You can now log in to your account.";
+                 "Email verified successfully. You can now log in to your account.";
 
         window.history.replaceState(
             {},
