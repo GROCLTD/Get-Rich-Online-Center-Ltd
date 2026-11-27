@@ -295,7 +295,73 @@ footer {
     display: block;
     text-align: center;
 }
+    
+/* ========================================
+   CLIENT DASHBOARD
+======================================== */
+#dashboard_page {
+    max-width: none;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
 
+/* DASHBOARD SIDEBAR */
+#dashboard_sidebar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    bottom: 0;
+    width: 270px;
+    background: #0b192b;
+    border-right: 1px solid #26364a;
+    padding: 20px 12px;
+    z-index: 999;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* SHOW SIDEBAR */
+#dashboard_sidebar:not(.hidden) {
+    display: flex;
+}
+
+/* SIDEBAR BUTTONS */
+#dashboard_sidebar button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 15px;
+    border-radius: 8px;
+}
+
+/* SIDEBAR HOVER */
+#dashboard_sidebar button:hover {
+    background: #172c45;
+}
+
+/* LOGOUT AT THE BOTTOM */
+#dashboard_sidebar button:last-child {
+    margin-top: auto;
+    border-top: 1px solid #26364a;
+    border-radius: 0;
+    color: #f87171;
+}
+
+/* DASHBOARD CONTENT */
+#dashboard_content {
+    width: 100%;
+    text-align: center;
+    padding: 25px 10px;
+}
 </style>
     
 </head>
@@ -673,6 +739,66 @@ footer {
         </button>
 
         <p id="reset_message"></p>
+
+    </div>
+
+</section>
+
+<!-- ========================================
+     CLIENT DASHBOARD PAGE
+======================================== -->
+<header class="main-header hidden" id="dashboard_header">
+
+    <div class="brand-block">
+
+        <img
+            src="Get%20Rich%20Online%20Center.png"
+            alt="GET RICH ONLINE CENTER LTD"
+            class="company-logo"
+        >
+
+        <div class="brand-name">
+            GET RICH ONLINE CENTER LTD
+        </div>
+
+    </div>
+
+    <div class="header-actions">
+
+        <button
+            class="menu-button"
+            onclick="toggleDashboardMenu(event)"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+<section id="dashboard_page" class="hidden">
+
+    <div id="dashboard_sidebar" class="hidden">
+
+        <button>👤 Profile</button>
+
+        <button>💳 Trading Accounts</button>
+
+        <button>📊 Strategies</button>
+
+        <button>📈 Performance</button>
+
+        <button>💰 Payments</button>
+
+        <button onclick="logout()">🚪 Logout</button>
+
+    </div>
+
+    <div id="dashboard_content">
+
+        <h2>CLIENT DASHBOARD</h2>
+
+        <p>Welcome to your account.</p>
 
     </div>
 
