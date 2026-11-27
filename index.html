@@ -300,7 +300,7 @@ footer {
 
 <!-- NAVIGATION MENU -->
 <nav id="main-menu" class="hidden">
-    <a href="javascript:void(0)" onclick="openAccountPage()">LOGIN</a>
+    <a href="javascript:void(0)" onclick="login_page()">LOGIN</a>
     <a href="javascript:void(0)" onclick="openAccountPage()">REGISTER</a>
     
 </nav>
@@ -497,6 +497,7 @@ footer {
     <div class="card">
 
         <h2>CLIENT LOGIN</h2>
+        <div id="login_form">
 
         <input
             type="email"
@@ -511,8 +512,9 @@ footer {
         >
 
         <button onclick="login()">LOGIN</button>
-
-        <p>
+        </div>
+        
+     <p> 
     <a href="#" onclick="showForgotPassword(); return false;">
         Forgot Password?
     </a>
@@ -865,10 +867,16 @@ async function login() {
 // ========================================
 function showForgotPassword() {
 
+    document.getElementById("login_form")
+        .classList.add("hidden");
+
+    document.querySelector("#login_page a")
+        .parentElement.classList.add("hidden");
+
     document.getElementById("forgot_password_area")
         .classList.remove("hidden");
 
-}
+    }
 
 // ========================================
 // FORGOT PASSWORD
