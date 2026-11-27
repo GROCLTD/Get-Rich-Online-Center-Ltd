@@ -209,7 +209,11 @@ button:hover,
 .hidden {
     display: none !important;
 }
-
+    
+footer.hidden {
+    display: none !important;
+}
+    
 #message {
     color: #60a5fa;
     overflow-wrap: anywhere;
@@ -724,22 +728,37 @@ function displayPage(pageId, headerId = "") {
     sessionStorage.setItem("activePage", pageId);
     sessionStorage.setItem("activeHeader", headerId);
 
+    // HIDE ALL SECTIONS
     document.querySelectorAll("body > section").forEach(section => {
         section.classList.add("hidden");
     });
 
+    // HIDE ALL HEADERS
     document.querySelectorAll("body > header").forEach(header => {
         header.classList.add("hidden");
     });
 
+    // SHOW SELECTED HEADER
     if (headerId) {
         document.getElementById(headerId).classList.remove("hidden");
     }
 
+    // SHOW SELECTED PAGE
     document.getElementById(pageId).classList.remove("hidden");
 
+    // CONTROL FOOTER
+    if (
+        pageId === "account_page" ||
+        pageId === "login_page" ||
+        pageId === "reset_password_page"
+    ) {
+        document.querySelector("footer").classList.add("hidden");
+    } else {
+        document.querySelector("footer").classList.remove("hidden");
+    }
+
     window.scrollTo(0, 0);
-}
+    }
 
 
 // ========================================
