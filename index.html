@@ -116,18 +116,40 @@ body {
     margin: 0;
 }
 
+/* ========================================
+   HOME NAVIGATION - RIGHT SIDEBAR
+======================================== */
 #main-menu {
-    background: #0d1b2d;
-    padding: 15px;
-    text-align: center;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    left: auto;
+    bottom: 0;
+    width: 270px;
+    background: #0b192b;
+    border-left: 1px solid #26364a;
+    padding: 20px 12px;
+    text-align: left;
+    z-index: 999;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#main-menu:not(.hidden) {
+    display: flex;
 }
 
 #main-menu a {
     display: block;
-    padding: 12px;
+    padding: 15px;
     color: white;
     text-decoration: none;
+    border-radius: 8px;
 }
+
+#main-menu a:hover {
+    background: #172c45;
+ }
 
 section {
     padding: 50px 20px;
