@@ -931,47 +931,16 @@ function showMessage(message) {
 
 
 // ========================================
-// HOME SIDEBAR MENU
-// ========================================
-function toggleMenu(event) {
-
-    event.stopPropagation();
-
-    const menu = document.getElementById("main-menu");
-
-    menu.classList.toggle("hidden");
-
-}
-
-document.addEventListener("click", function(event) {
-
-    const menu = document.getElementById("main-menu");
-
-    const button = document.querySelector(".menu-button");
-
-    if (
-        !menu.contains(event.target) &&
-        !button.contains(event.target)
-    ) {
-
-        menu.classList.add("hidden");
-
-    }
-
-});
-
-// CLOSE HOME MENU WHEN A MENU ITEM IS SELECTED
-function closeHomeMenu() {
-    document.getElementById("main-menu").classList.add("hidden");
-    }
-    
 // UPDATE MENU ICON
+// ========================================
 function updateMenuIcon(buttonId, isOpen) {
     document.getElementById(buttonId).textContent =
         isOpen ? "×" : "☰";
 }
 
+// ========================================
 // HOME MENU
+// ========================================
 function toggleMenu(event) {
     event.stopPropagation();
 
@@ -984,7 +953,15 @@ function toggleMenu(event) {
     );
 }
 
+// CLOSE HOME MENU
+function closeHomeMenu() {
+    document.getElementById("main-menu").classList.add("hidden");
+    updateMenuIcon("home_menu_button", false);
+}
+
+// ========================================
 // DASHBOARD MENU
+// ========================================
 function toggleDashboardMenu(event) {
     event.stopPropagation();
 
@@ -996,6 +973,36 @@ function toggleDashboardMenu(event) {
         !sidebar.classList.contains("hidden")
     );
 }
+
+// ========================================
+// CLOSE MENUS WHEN CLICKING OUTSIDE
+// ========================================
+document.addEventListener("click", function(event) {
+
+    // HOME MENU
+    const homeMenu = document.getElementById("main-menu");
+    const homeButton = document.getElementById("home_menu_button");
+
+    if (
+        !homeMenu.contains(event.target) &&
+        !homeButton.contains(event.target)
+    ) {
+        closeHomeMenu();
+    }
+
+    // DASHBOARD MENU
+    const dashboardMenu = document.getElementById("dashboard_sidebar");
+    const dashboardButton = document.getElementById("dashboard_menu_button");
+
+    if (
+        !dashboardMenu.contains(event.target) &&
+        !dashboardButton.contains(event.target)
+    ) {
+        dashboardMenu.classList.add("hidden");
+        updateMenuIcon("dashboard_menu_button", false);
+    }
+
+});
     
 // ========================================
 // GENERAL PAGE NAVIGATION
