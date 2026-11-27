@@ -643,10 +643,11 @@ const db = supabase.createClient(
 );
 
 // ========================================
-// DETECT PASSWORD RECOVERY
+// DETECT PASSWORD RECOVERY AND EMAIL VERIFICATION
 // ========================================
 db.auth.onAuthStateChange((event, session) => {
 
+    // PASSWORD RECOVERY
     if (event === "PASSWORD_RECOVERY" && session) {
 
         sessionStorage.setItem(
@@ -659,8 +660,18 @@ db.auth.onAuthStateChange((event, session) => {
         openPage("reset_password_page", "login_header");
     }
 
-});
+    // EMAIL VERIFICATION
+    if (event === "SIGNED_IN" && session &&
+        session.user.email_confirmed_at) {
 
+        openPage("login_page", "login_header");
+
+        document.getElementById("login_message").textContent =
+            "Email verified successfully. You can now log in to your account.";
+    }
+
+});
+    
 // ========================================
 // DISPLAY MESSAGE
 // ========================================
@@ -824,20 +835,6 @@ function restoreLastPage() {
 }
 
 restoreLastPage();
-
-// ========================================
-// EMAIL VERIFICATION SUCCESS MESSAGE
-// ========================================
-const urlParams = new URLSearchParams(window.location.search);
-
-if (urlParams.get("page") === "login_page") {
-
-    openPage("login_page", "login_header");
-
-    document.getElementById("login_message").textContent =
-        "Email verified successfully. You can now log in to your account.";
-
-}
     
 // ========================================
 // INITIALIZE HOME PAGE HISTORY
