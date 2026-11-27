@@ -776,19 +776,17 @@ window.addEventListener("popstate", function(event) {
 
     } else {
 
-        sessionStorage.removeItem("activePage");
-        sessionStorage.removeItem("activeHeader");
-
-        document.getElementById("account_page").classList.add("hidden");
-        document.getElementById("account_header").classList.add("hidden");
-
-        document.querySelector(".main-header").classList.remove("hidden");
-
         document.querySelectorAll("body > section").forEach(section => {
-            if (section.id !== "account_page") {
-                section.classList.remove("hidden");
-            }
-        });
+
+    if (
+        section.id !== "account_page" &&
+        section.id !== "login_page" &&
+        section.id !== "reset_password_page"
+    ) {
+        section.classList.remove("hidden");
+    }
+
+});
 
         window.scrollTo(0, 0);
     }
