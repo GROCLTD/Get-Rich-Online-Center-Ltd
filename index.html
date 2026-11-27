@@ -628,7 +628,7 @@ db.auth.onAuthStateChange((event, session) => {
             "reset_password_page"
         );
 
-        sessionStorage.setItem("activeHeader", "");
+        sessionStorage.setItem("activeHeader", "login_header");
 
         openPage("reset_password_page", "login_header");
     }
@@ -987,7 +987,13 @@ async function updatePassword() {
 
     await db.auth.signOut();
 
-    openPage("login_page");
+    document.getElementById("login_form").classList.remove("hidden");
+    document.getElementById("forgot_password_area").classList.add("hidden");
+    document.querySelector("#login_page a")
+        
+    .parentElement.classList.remove("hidden");
+
+    openPage("login_page", "login_header");
 
     document.getElementById("login_message").textContent =
         "Password updated successfully. You can now login.";
