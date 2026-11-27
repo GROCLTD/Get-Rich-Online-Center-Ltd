@@ -558,29 +558,53 @@ document.addEventListener("click", function(event) {
 });
 
 // ========================================
-// OPEN ACCOUNT PAGE
+// GENERAL PAGE NAVIGATION
 // ========================================
-function openAccountPage() {
+
+function openPage(pageId, headerId = "") {
+
+    sessionStorage.setItem("activePage", pageId);
+    sessionStorage.setItem("activeHeader", headerId);
 
     document.querySelectorAll("body > section").forEach(section => {
         section.classList.add("hidden");
     });
 
-    document.querySelector(".main-header").classList.add("hidden");
+    document.querySelectorAll("body > header").forEach(header => {
+        header.classList.add("hidden");
+    });
 
-    document.getElementById("account_header").classList.remove("hidden");
+    if (headerId) {
+        document.getElementById(headerId).classList.remove("hidden");
+    }
 
-    document.getElementById("account_page").classList.remove("hidden");
+    document.getElementById(pageId).classList.remove("hidden");
 
     window.scrollTo(0, 0);
 }
+
+
+// ========================================
+// OPEN ACCOUNT PAGE
+// ========================================
+function openAccountPage() {
+
+    openPage("account_page", "account_header");
+
+}
+
 
 // ========================================
 // BACK TO HOME
 // ========================================
 function closeAccountPage() {
 
+    sessionStorage.removeItem("activePage");
+    sessionStorage.removeItem("activeHeader");
+
     document.getElementById("account_page").classList.add("hidden");
+
+    document.getElementById("account_header").classList.add("hidden");
 
     document.querySelector(".main-header").classList.remove("hidden");
 
@@ -592,11 +616,39 @@ function closeAccountPage() {
 
     window.scrollTo(0, 0);
 }
+
+
+// ========================================
+// RESTORE PAGE AFTER REFRESH
+// ========================================
+function restoreLastPage() {
+
+    const pageId = sessionStorage.getItem("activePage");
+    const headerId = sessionStorage.getItem("activeHeader");
+
+    if (pageId && document.getElementById(pageId)) {
+
+        document.querySelectorAll("body > section").forEach(section => {
+            section.classList.add("hidden");
+        });
+
+        document.querySelectorAll("body > header").forEach(header => {
+            header.classList.add("hidden");
+        });
+
+        if (headerId && document.getElementById(headerId)) {
+            document.getElementById(headerId).classList.remove("hidden");
+        }
+
+        document.getElementById(pageId).classList.remove("hidden");
+    }
+}
+
+restoreLastPage();
     
 // ========================================
 // CLIENT REGISTRATION
 // ========================================
-
 async function register() {
 
     const fullName =
