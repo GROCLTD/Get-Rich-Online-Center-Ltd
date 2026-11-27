@@ -910,6 +910,28 @@ document.addEventListener("click", function(event) {
 });
 
 // ========================================
+// CLOSE DASHBOARD SIDEBAR WHEN CLICKING OUTSIDE
+// ========================================
+document.addEventListener("click", function(event) {
+
+    const sidebar = document.getElementById("dashboard_sidebar");
+
+    const dashboardButton = document.querySelector(
+        "#dashboard_header .menu-button"
+    );
+
+    if (
+        !sidebar.contains(event.target) &&
+        !dashboardButton.contains(event.target)
+    ) {
+
+        sidebar.classList.add("hidden");
+
+    }
+
+});
+    
+// ========================================
 // GENERAL PAGE NAVIGATION
 // ========================================
 function openPage(pageId, headerId = "") {
@@ -1196,7 +1218,7 @@ async function login() {
     document.getElementById("login_email").value = "";
     document.getElementById("login_password").value = "";
 
-    openPage("account_page");
+    openPage("dashboard_page", "dashboard_header");
 
     document.getElementById("auth_area").classList.add("hidden");
 
@@ -1341,11 +1363,46 @@ async function logout() {
         return;
     }
 
-    document.getElementById("client_dashboard").classList.add("hidden");
+    // HIDE DASHBOARD SIDEBAR
+    document.getElementById("dashboard_sidebar").classList.add("hidden");
 
+    // RETURN TO HOME PAGE
+    sessionStorage.removeItem("activePage");
+    sessionStorage.removeItem("activeHeader");
+
+    history.pushState(
+        { pageId: "home", headerId: "" },
+        "",
+        window.location.pathname
+    );
+
+    // HIDE ALL SECTIONS
+    document.querySelectorAll("body > section").forEach(section => {
+        section.classList.add("hidden");
+    });
+
+    // SHOW PUBLIC HOME SECTIONS
+    document.querySelectorAll(
+        "body > section:not(#account_page):not(#login_page):not(#reset_password_page):not(#dashboard_page)"
+    ).forEach(section => {
+        section.classList.remove("hidden");
+    });
+
+    // HIDE ALL HEADERS
+    document.querySelectorAll("body > header").forEach(header => {
+        header.classList.add("hidden");
+    });
+
+    // SHOW HOME HEADER
     document.querySelector(".main-header").classList.remove("hidden");
 
+    // SHOW FOOTER
+    document.querySelector("footer").classList.remove("hidden");
+
+    // CLOSE HOME MENU
+    document.getElementById("main-menu").classList.add("hidden");
+
     window.scrollTo(0, 0);
-}
+    }
 
 </script>
