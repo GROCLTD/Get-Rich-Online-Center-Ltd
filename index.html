@@ -444,9 +444,15 @@ footer {
 
 <!-- NAVIGATION MENU -->
 <nav id="main-menu" class="hidden">
-    <a href="#" onclick="openPage('login_page', 'login_header'); return false;">LOGIN</a>
-    <a href="javascript:void(0)" onclick="openAccountPage()">REGISTER</a>
-    
+
+    <a href="#" onclick="closeHomeMenu(); openPage('login_page', 'login_header'); return false;">
+        👤 LOGIN
+    </a>
+
+    <a href="javascript:void(0)" onclick="closeHomeMenu(); openAccountPage();">
+        ✍️ REGISTER
+    </a>
+
 </nav>
 
 <!-- HOME SECTION -->
@@ -952,6 +958,11 @@ document.addEventListener("click", function(event) {
 
 });
 
+// CLOSE HOME MENU WHEN A MENU ITEM IS SELECTED
+function closeHomeMenu() {
+    document.getElementById("main-menu").classList.add("hidden");
+}
+    
 // ========================================
 // DASHBOARD LOGIN SIDEBAR MENU
 // ========================================
