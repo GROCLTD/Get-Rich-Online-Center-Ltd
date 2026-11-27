@@ -661,13 +661,25 @@ db.auth.onAuthStateChange((event, session) => {
     }
 
     // EMAIL VERIFICATION
-    if (event === "SIGNED_IN" && session &&
-        session.user.email_confirmed_at) {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (
+        event === "SIGNED_IN" &&
+        session &&
+        session.user.email_confirmed_at &&
+        urlParams.get("page") === "login_page"
+    ) {
 
         openPage("login_page", "login_header");
 
         document.getElementById("login_message").textContent =
             "Email verified successfully. You can now log in to your account.";
+
+        window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+        );
     }
 
 });
