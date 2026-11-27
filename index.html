@@ -335,7 +335,7 @@ footer {
 
 <!-- NAVIGATION MENU -->
 <nav id="main-menu" class="hidden">
-    <a href="javascript:void(0)" onclick="login_header()">LOGIN</a>
+    <a href="#" onclick="openPage('login_page', 'login_header'); return false;">LOGIN</a>
     <a href="javascript:void(0)" onclick="openAccountPage()">REGISTER</a>
     
 </nav>
@@ -825,12 +825,16 @@ function displayPage(pageId, headerId = "") {
 
 
 // ========================================
+// ========================================
 // PHONE BACK BUTTON
 // ========================================
 window.addEventListener("popstate", function(event) {
 
-    if (event.state && event.state.pageId &&
-        event.state.pageId !== "home") {
+    if (
+        event.state &&
+        event.state.pageId &&
+        event.state.pageId !== "home"
+    ) {
 
         displayPage(
             event.state.pageId,
@@ -839,19 +843,35 @@ window.addEventListener("popstate", function(event) {
 
     } else {
 
-        sessionStorage.removeItem("activePage");
-        sessionStorage.removeItem("activeHeader");
+        // HIDE ALL SECTIONS FIRST
+        document.querySelectorAll("body > section").forEach(section => {
+            section.classList.add("hidden");
+        });
 
-        document.getElementById("account_page").classList.add("hidden");
-        document.getElementById("account_header").classList.add("hidden");
+        // SHOW PUBLIC HOME SECTIONS ONLY
+        document.querySelectorAll(
+            "body > section:not(#account_page):not(#login_page):not(#reset_password_page)"
+        ).forEach(section => {
+            section.classList.remove("hidden");
+        });
 
+        // HIDE ALL HEADERS
+        document.querySelectorAll("body > header").forEach(header => {
+            header.classList.add("hidden");
+        });
+
+        // SHOW MAIN WEBSITE HEADER
         document.querySelector(".main-header").classList.remove("hidden");
 
-        document.querySelectorAll("body > section").forEach(section => {
-            if (section.id !== "account_page") {
-                section.classList.remove("hidden");
-            }
-        });
+        // SHOW FOOTER
+        document.querySelector("footer").classList.remove("hidden");
+
+        // HIDE NAVIGATION MENU
+        document.getElementById("main-menu").classList.add("hidden");
+
+        // CLEAR SAVED PAGE
+        sessionStorage.removeItem("activePage");
+        sessionStorage.removeItem("activeHeader");
 
         window.scrollTo(0, 0);
     }
