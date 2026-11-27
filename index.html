@@ -116,9 +116,7 @@ body {
     margin: 0;
 }
 
-/* ========================================
-   HOME NAVIGATION - RIGHT SIDEBAR
-======================================== */
+/* HOME SIDEBAR */
 #main-menu {
     position: fixed;
     top: 80px;
@@ -129,27 +127,37 @@ body {
     background: #0b192b;
     border-left: 1px solid #26364a;
     padding: 20px 12px;
-    text-align: left;
     z-index: 999;
     flex-direction: column;
     gap: 8px;
 }
 
+/* SHOW SIDEBAR */
 #main-menu:not(.hidden) {
     display: flex;
 }
 
+/* SIDEBAR BUTTONS */
 #main-menu a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
     padding: 15px;
+    margin: 0;
+    background: transparent;
     color: white;
+    text-align: left;
+    font-size: 15px;
     text-decoration: none;
     border-radius: 8px;
 }
 
+/* SIDEBAR HOVER */
 #main-menu a:hover {
     background: #172c45;
- }
+}
 
 section {
     padding: 50px 20px;
