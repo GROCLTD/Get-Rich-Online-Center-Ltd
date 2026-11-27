@@ -513,12 +513,56 @@ footer {
         <button onclick="login()">LOGIN</button>
 
         <p>
-            <a href="#" onclick="forgotPassword(); return false;">
-                Forgot Password?
-            </a>
-        </p>
+    <a href="#" onclick="showForgotPassword(); return false;">
+        Forgot Password?
+    </a>
+</p>
+
+<div id="forgot_password_area" class="hidden">
+
+    <input
+        type="email"
+        id="forgot_email"
+        placeholder="Enter Your Email Address"
+    >
+
+    <button onclick="forgotPassword()">
+        RESET PASSWORD
+    </button>
+
+</div>
 
         <p id="login_message"></p>
+
+    </div>
+
+</section>
+
+
+<!-- RESET PASSWORD PAGE -->
+<section id="reset_password_page" class="hidden">
+
+    <div class="card">
+
+        <h2>RESET YOUR PASSWORD</h2>
+
+        <input
+            type="password"
+            id="new_password"
+            placeholder="New Password"
+        >
+
+        <input
+            type="password"
+            id="confirm_password"
+            placeholder="Confirm New Password"
+        >
+
+        <button onclick="updatePassword()">
+            RESET PASSWORD
+        </button>
+
+        <p id="reset_message"></p>
 
     </div>
 
@@ -547,6 +591,18 @@ const db = supabase.createClient(
     SUPABASE_PUBLISHABLE_KEY
 );
 
+// ========================================
+// DETECT PASSWORD RECOVERY
+// ========================================
+db.auth.onAuthStateChange((event, session) => {
+
+    if (event === "PASSWORD_RECOVERY" && session) {
+
+        openPage("reset_password_page");
+
+    }
+
+});
 
 // ========================================
 // DISPLAY MESSAGE
@@ -797,6 +853,88 @@ async function login() {
     window.scrollTo(0, 0);
 }
 
+// ========================================
+// SHOW FORGOT PASSWORD
+// ========================================
+function showForgotPassword() {
+
+    document.getElementById("forgot_password_area")
+        .classList.remove("hidden");
+
+}
+
+// ========================================
+// FORGOT PASSWORD
+// ========================================
+async function forgotPassword() {
+
+    const email =
+        document.getElementById("forgot_email").value.trim();
+
+    const message =
+        document.getElementById("login_message");
+
+    if (!email) {
+        message.textContent = "Please enter your email address.";
+        return;
+    }
+
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    message.textContent =
+        "Password reset link has been sent to your email.";
+
+    }
+
+
+// ========================================
+// UPDATE PASSWORD
+// ========================================
+async function updatePassword() {
+
+    const newPassword =
+        document.getElementById("new_password").value;
+
+    const confirmPassword =
+        document.getElementById("confirm_password").value;
+
+    const message =
+        document.getElementById("reset_message");
+
+    if (!newPassword || !confirmPassword) {
+        message.textContent = "Please fill in both password fields.";
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        message.textContent = "Passwords do not match.";
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        message.textContent = "Password must be at least 6 characters.";
+        return;
+    }
+
+    const { error } = await db.auth.updateUser({
+        password: newPassword
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    message.textContent = "Password updated successfully. You can now login.";
+
+}
 
 // ========================================
 // CLIENT LOGOUT
