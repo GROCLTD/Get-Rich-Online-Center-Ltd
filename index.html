@@ -1293,30 +1293,44 @@ async function register() {
     }
 
 // ========================================
-// CLIENT LOGIN
+// OTP LOGIN STATE
 // ========================================
-async function login() {
 
-    const email =
-        document.getElementById("login_email").value.trim();
+let pendingLogin = null;
 
-    const password =
-        document.getElementById("login_password").value;
+// ========================================
+// DEVICE IDENTIFICATION
+// ========================================
 
-    const { data, error } = await db.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+function getDeviceId() {
 
-    if (error) {
-        document.getElementById("login_message").textContent =
-            error.message;
-        return;
+    let deviceId = localStorage.getItem("loginDeviceId");
+
+    if (!deviceId) {
+        deviceId = crypto.randomUUID();
+        localStorage.setItem("loginDeviceId", deviceId);
     }
 
-    // CLEAR LOGIN FIELDS
+    return deviceId;
+}
+
+// ========================================
+// LOGIN SUCCESS
+// ========================================
+
+function openClientDashboard() {
+
     document.getElementById("login_email").value = "";
     document.getElementById("login_password").value = "";
+    document.getElementById("login_otp").value = "";
+
+    document.getElementById("login_message").textContent = "";
+
+    document.getElementById("login_form").classList.remove("hidden");
+    document.getElementById("otp_form").classList.add("hidden");
+    document.getElementById("login_links").classList.remove("hidden");
+
+    pendingLogin = null;
 
     openPage("dashboard_page", "dashboard_header");
 
@@ -1330,6 +1344,241 @@ async function login() {
     }
 
     window.scrollTo(0, 0);
+}
+
+// ========================================
+// COMPLETE SUPABASE LOGIN AFTER OTP
+// ========================================
+
+async function completeVerifiedLogin() {
+
+    const { data, error } = await db.auth.signInWithPassword({
+        email: pendingLogin.email,
+        password: pendingLogin.password
+    });
+
+    if (error) {
+        document.getElementById("login_message").textContent =
+            "Verification succeeded, but login failed. Please try again.";
+
+        return;
+    }
+
+    openClientDashboard();
+}
+
+// ========================================
+// CLIENT LOGIN
+// ========================================
+
+async function login() {
+
+    const email =
+        document.getElementById("login_email").value.trim();
+
+    const password =
+        document.getElementById("login_password").value;
+
+    const message =
+        document.getElementById("login_message");
+
+    if (!email || !password) {
+        message.textContent = "Please enter your email and password.";
+        return;
+    }
+
+    message.textContent = "Checking login details...";
+
+    pendingLogin = {
+        email: email,
+        password: password,
+        deviceId: getDeviceId()
+    };
+
+    const deviceToken =
+        localStorage.getItem("trustedDeviceToken");
+
+    const { data, error } = await db.functions.invoke(
+        "login-otp",
+        {
+            body: {
+                action: "send",
+                email: email,
+                password: password,
+                deviceId: pendingLogin.deviceId,
+                deviceToken: deviceToken
+            }
+        }
+    );
+
+    if (error) {
+        message.textContent = "Unable to start login verification. Please try again.";
+        pendingLogin = null;
+        return;
+    }
+
+    if (!data || !data.success) {
+        message.textContent =
+            data?.message || "Login verification failed.";
+
+        pendingLogin = null;
+        return;
+    }
+
+    // TRUSTED DEVICE
+    if (data.trusted === true) {
+        await completeVerifiedLogin();
+        return;
+    }
+
+    // SHOW OTP FORM
+    document.getElementById("login_form").classList.add("hidden");
+
+    document.getElementById("login_links").classList.add("hidden");
+
+    document.getElementById("otp_form").classList.remove("hidden");
+
+    message.textContent = "Verification code sent to your email.";
+
+    document.getElementById("login_otp").value = "";
+}
+
+// ========================================
+// VERIFY LOGIN OTP
+// ========================================
+
+async function verifyLoginOtp() {
+
+    if (!pendingLogin) {
+        document.getElementById("login_message").textContent =
+            "Please start login again.";
+
+        return;
+    }
+
+    const otp =
+        document.getElementById("login_otp").value.trim();
+
+    const trustDevice =
+        document.getElementById("trust_device").checked;
+
+    const message =
+        document.getElementById("login_message");
+
+    if (!/^[0-9]{6}$/.test(otp)) {
+        message.textContent = "Enter a valid 6-digit OTP.";
+        return;
+    }
+
+    message.textContent = "Verifying OTP...";
+
+    const { data, error } = await db.functions.invoke(
+        "login-otp",
+        {
+            body: {
+                action: "verify",
+                email: pendingLogin.email,
+                password: pendingLogin.password,
+                deviceId: pendingLogin.deviceId,
+                otp: otp,
+                trustDevice: trustDevice
+            }
+        }
+    );
+
+    if (error) {
+        message.textContent = "Unable to verify OTP. Please try again.";
+        return;
+    }
+
+    if (!data || !data.success || !data.verified) {
+        message.textContent =
+            data?.message || "OTP verification failed.";
+
+        return;
+    }
+
+    // SAVE TRUSTED DEVICE TOKEN
+    if (data.deviceToken) {
+
+        localStorage.setItem(
+            "trustedDeviceToken",
+            data.deviceToken
+        );
+
+    } else if (trustDevice === false) {
+
+        localStorage.removeItem("trustedDeviceToken");
+
+    }
+
+    // LOGIN ONLY AFTER OTP VERIFICATION
+    await completeVerifiedLogin();
+}
+
+// ========================================
+// RESEND LOGIN OTP
+// ========================================
+
+async function resendLoginOtp() {
+
+    if (!pendingLogin) {
+        document.getElementById("login_message").textContent =
+            "Please start login again.";
+
+        return;
+    }
+
+    const message =
+        document.getElementById("login_message");
+
+    message.textContent = "Sending a new verification code...";
+
+    const { data, error } = await db.functions.invoke(
+        "login-otp",
+        {
+            body: {
+                action: "send",
+                email: pendingLogin.email,
+                password: pendingLogin.password,
+                deviceId: pendingLogin.deviceId
+            }
+        }
+    );
+
+    if (error) {
+        message.textContent = "Unable to resend verification code.";
+        return;
+    }
+
+    if (!data || !data.success) {
+        message.textContent =
+            data?.message || "Unable to resend verification code.";
+
+        return;
+    }
+
+    message.textContent = "A new verification code has been sent.";
+    document.getElementById("login_otp").value = "";
+}
+
+// ========================================
+// CANCEL OTP LOGIN
+// ========================================
+
+function cancelOtpLogin() {
+
+    pendingLogin = null;
+
+    document.getElementById("login_otp").value = "";
+
+    document.getElementById("otp_form").classList.add("hidden");
+
+    document.getElementById("login_form").classList.remove("hidden");
+
+    document.getElementById("login_links").classList.remove("hidden");
+
+    document.getElementById("login_message").textContent = "";
 }
 
 // ========================================
