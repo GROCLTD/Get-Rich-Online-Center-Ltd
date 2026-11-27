@@ -598,6 +598,13 @@ db.auth.onAuthStateChange((event, session) => {
 
     if (event === "PASSWORD_RECOVERY" && session) {
 
+        sessionStorage.setItem(
+            "activePage",
+            "reset_password_page"
+        );
+
+        sessionStorage.setItem("activeHeader", "");
+
         openPage("reset_password_page");
 
     }
@@ -932,7 +939,12 @@ async function updatePassword() {
         return;
     }
 
-    message.textContent = "Password updated successfully. You can now login.";
+    await db.auth.signOut();
+
+    openPage("login_page");
+
+    document.getElementById("login_message").textContent =
+        "Password updated successfully. You can now login.";
 
 }
 
