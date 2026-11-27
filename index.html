@@ -981,6 +981,10 @@ async function register() {
         return;
     }
 
+    document.getElementById("full_name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    
     showMessage("Registration successful. Please verify your email.");
     }
 
@@ -1005,6 +1009,10 @@ async function login() {
             error.message;
         return;
     }
+
+    // CLEAR LOGIN FIELDS
+    document.getElementById("login_email").value = "";
+    document.getElementById("login_password").value = "";
 
     openPage("account_page");
 
@@ -1121,6 +1129,9 @@ async function updatePassword() {
         return;
     }
 
+    document.getElementById("new_password").value = "";
+    document.getElementById("confirm_password").value = "";
+    
     await db.auth.signOut();
 
     document.getElementById("login_form").classList.remove("hidden");
