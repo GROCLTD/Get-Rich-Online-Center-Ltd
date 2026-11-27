@@ -826,6 +826,20 @@ function restoreLastPage() {
 restoreLastPage();
 
 // ========================================
+// EMAIL VERIFICATION SUCCESS MESSAGE
+// ========================================
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.get("page") === "login_page") {
+
+    openPage("login_page", "login_header");
+
+    document.getElementById("login_message").textContent =
+        "Email verified successfully. You can now log in to your account.";
+
+}
+    
+// ========================================
 // INITIALIZE HOME PAGE HISTORY
 // ========================================
 if (!history.state) {
@@ -860,8 +874,10 @@ async function register() {
         password: password,
         options: {
             data: {
-                full_name: fullName
-            }
+            full_name: fullName
+            },
+            emailRedirectTo: window.location.origin +
+            window.location.pathname + "?page=login_page"
         }
     });
 
@@ -870,9 +886,8 @@ async function register() {
         return;
     }
 
-    showMessage("Registration successful. Please check your email.");
+    showMessage("Registration successful. Please verify your email.");
 }
-
 
 // ========================================
 // CLIENT LOGIN
