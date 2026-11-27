@@ -880,7 +880,7 @@ function showMessage(message) {
 
 
 // ========================================
-// NAVIGATION MENU
+// HOME SIDEBAR MENU
 // ========================================
 function toggleMenu(event) {
 
@@ -910,7 +910,7 @@ document.addEventListener("click", function(event) {
 });
 
 // ========================================
-// DASHBOARD SIDEBAR MENU
+// DASHBOARD LOGIN SIDEBAR MENU
 // ========================================
 function toggleDashboardMenu(event) {
 
@@ -921,21 +921,18 @@ function toggleDashboardMenu(event) {
     sidebar.classList.toggle("hidden");
 
 }
-    
+
 // ========================================
-// CLOSE DASHBOARD SIDEBAR WHEN CLICKING OUTSIDE
+// CLOSE DASHBOARD SIDEBAR
 // ========================================
 document.addEventListener("click", function(event) {
 
     const sidebar = document.getElementById("dashboard_sidebar");
-
-    const dashboardButton = document.querySelector(
-        "#dashboard_header .menu-button"
-    );
+    const button = document.querySelector("#dashboard_header .menu-button");
 
     if (
         !sidebar.contains(event.target) &&
-        !dashboardButton.contains(event.target)
+        !button.contains(event.target)
     ) {
 
         sidebar.classList.add("hidden");
