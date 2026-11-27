@@ -1016,6 +1016,9 @@ function displayPage(pageId, headerId = "") {
 
     document.getElementById(pageId).classList.remove("hidden");
 
+   // HIDE COPYRIGHT ON ALL OTHER PAGES
+   document.querySelector("footer").classList.add("hidden");
+    
     window.scrollTo(0, 0);
 }
 
