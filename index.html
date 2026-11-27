@@ -656,64 +656,115 @@ footer {
     <div class="card">
 
         <h2>CLIENT LOGIN</h2>
+
+        <!-- LOGIN FORM -->
         <div id="login_form">
 
-        <input
-            type="email"
-            id="login_email"
-            placeholder="Email Address"
-        >
+            <input
+                type="email"
+                id="login_email"
+                placeholder="Email Address"
+            >
 
-        <div class="password-wrapper">
+            <div class="password-wrapper">
 
-    <input
-        type="password"
-        id="login_password"
-        placeholder="Password"
-    >
+                <input
+                    type="password"
+                    id="login_password"
+                    placeholder="Password"
+                >
 
-    <span
-        class="password-eye"
-        onclick="togglePassword('login_password', this)"
-    >👁</span>
+                <span
+                    class="password-eye"
+                    onclick="togglePassword('login_password', this)"
+                >👁</span>
+
+            </div>
+
+            <button onclick="login()">Login</button>
 
         </div>
 
-        <button onclick="login()">Login</button>
+        <!-- OTP FORM -->
+        <div id="otp_form" class="hidden">
+
+            <h3>EMAIL VERIFICATION</h3>
+
+            <p>
+                Enter the 6-digit verification code sent to your email.
+            </p>
+
+            <input
+                type="text"
+                id="login_otp"
+                placeholder="Enter 6-digit OTP"
+                maxlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+            >
+
+            <label style="display:block; margin:15px 0;">
+                <input
+                    type="checkbox"
+                    id="trust_device"
+                    style="width:auto;"
+                >
+                Trust This Device for 7 Days
+            </label>
+
+            <button onclick="verifyLoginOtp()">
+                Verify OTP
+            </button>
+
+            <button onclick="resendLoginOtp()">
+                Resend OTP
+            </button>
+
+            <button onclick="cancelOtpLogin()">
+                Back To Login
+            </button>
+
         </div>
-        
-     <p>
-    <a href="#" onclick="showForgotPassword(); return false;">
-        Forgot Password?
-    </a>
-</p>
 
-<p class="auth-switch">
-    Don't have an account?
-    <a href="#" onclick="openPage('account_page', 'account_header'); return false;">
-        Create Account
-    </a>
-</p>
+        <!-- FORGOT PASSWORD -->
+        <div id="forgot_password_area" class="hidden">
 
-<div id="forgot_password_area" class="hidden">
+            <input
+                type="email"
+                id="forgot_email"
+                placeholder="Enter Your Email Address"
+            >
 
-    <input
-        type="email"
-        id="forgot_email"
-        placeholder="Enter Your Email Address"
-    >
+            <button onclick="forgotPassword()">
+                Reset Password
+            </button>
 
-    <button onclick="forgotPassword()">
-        Reset Password
-    </button>
-    
-<button type="button" onclick="backToLogin()">
-    Back To Login
-</button>
-    
-</div>
+            <button type="button" onclick="backToLogin()">
+                Back To Login
+            </button>
+
+        </div>
 
         <p id="login_message"></p>
+
+        <div id="login_links">
+
+            <p>
+                <a href="#" onclick="showForgotPassword(); return false;">
+                    Forgot Password?
+                </a>
+            </p>
+
+            <p class="auth-switch">
+                Don't have an account?
+
+                <a href="#"
+                   onclick="openPage('account_page', 'account_header'); return false;">
+                    Create Account
+                </a>
+            </p>
+
+        </div>
 
     </div>
 
