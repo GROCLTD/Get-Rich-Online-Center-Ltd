@@ -320,7 +320,7 @@ footer {
 </nav>
 
 <!-- HOME SECTION -->
-<section>
+<section class="home-section">
 
     <h2>TRADE GOLD (XAUUSD) WITH US</h2>
 
@@ -757,19 +757,27 @@ window.addEventListener("popstate", function(event) {
 
     } else {
 
+        // HIDE ALL SECTIONS
         document.querySelectorAll("body > section").forEach(section => {
+            section.classList.add("hidden");
+        });
 
-    if (
-        section.id !== "account_page" &&
-        section.id !== "login_page" &&
-        section.id !== "reset_password_page"
-    ) {
-        section.classList.remove("hidden");
-    }
+        // SHOW HOME SECTIONS ONLY
+        document.querySelectorAll(".home-section").forEach(section => {
+            section.classList.remove("hidden");
+        });
 
-});
+        // HIDE OTHER HEADERS
+        document.querySelectorAll("body > header").forEach(header => {
+            header.classList.add("hidden");
+        });
+
+        // SHOW HOME HEADER
         document.querySelector(".main-header").classList.remove("hidden");
-        
+
+        // SHOW FOOTER
+        document.querySelector("footer").classList.remove("hidden");
+
         window.scrollTo(0, 0);
     }
 
