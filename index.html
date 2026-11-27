@@ -561,8 +561,22 @@ document.addEventListener("click", function(event) {
 // ========================================
 // GENERAL PAGE NAVIGATION
 // ========================================
-
 function openPage(pageId, headerId = "") {
+
+    history.pushState(
+        { pageId: pageId, headerId: headerId },
+        "",
+        "#" + pageId
+    );
+
+    displayPage(pageId, headerId);
+}
+
+
+// ========================================
+// DISPLAY PAGE
+// ========================================
+function displayPage(pageId, headerId = "") {
 
     sessionStorage.setItem("activePage", pageId);
     sessionStorage.setItem("activeHeader", headerId);
@@ -586,6 +600,41 @@ function openPage(pageId, headerId = "") {
 
 
 // ========================================
+// PHONE BACK BUTTON
+// ========================================
+window.addEventListener("popstate", function(event) {
+
+    if (event.state && event.state.pageId) {
+
+        displayPage(
+            event.state.pageId,
+            event.state.headerId || ""
+        );
+
+    } else {
+
+        sessionStorage.removeItem("activePage");
+        sessionStorage.removeItem("activeHeader");
+
+        document.getElementById("account_page").classList.add("hidden");
+
+        document.getElementById("account_header").classList.add("hidden");
+
+        document.querySelector(".main-header").classList.remove("hidden");
+
+        document.querySelectorAll("body > section").forEach(section => {
+            if (section.id !== "account_page") {
+                section.classList.remove("hidden");
+            }
+        });
+
+        window.scrollTo(0, 0);
+    }
+
+});
+
+
+// ========================================
 // OPEN ACCOUNT PAGE
 // ========================================
 function openAccountPage() {
@@ -600,24 +649,8 @@ function openAccountPage() {
 // ========================================
 function closeAccountPage() {
 
-    sessionStorage.removeItem("activePage");
-    sessionStorage.removeItem("activeHeader");
-
-    document.getElementById("account_page").classList.add("hidden");
-
-    document.getElementById("account_header").classList.add("hidden");
-
-    document.querySelector(".main-header").classList.remove("hidden");
-
-    document.querySelectorAll("body > section").forEach(section => {
-        if (section.id !== "account_page") {
-            section.classList.remove("hidden");
-        }
-    });
-
-    window.scrollTo(0, 0);
-}
-
+    history.back();
+ }
 
 // ========================================
 // RESTORE PAGE AFTER REFRESH
@@ -625,27 +658,41 @@ function closeAccountPage() {
 function restoreLastPage() {
 
     const pageId = sessionStorage.getItem("activePage");
-    const headerId = sessionStorage.getItem("activeHeader");
+    const headerId = sessionStorage.getItem("activeHeader") || "";
 
     if (pageId && document.getElementById(pageId)) {
 
-        document.querySelectorAll("body > section").forEach(section => {
-            section.classList.add("hidden");
-        });
+        displayPage(pageId, headerId);
 
-        document.querySelectorAll("body > header").forEach(header => {
-            header.classList.add("hidden");
-        });
+        history.replaceState(
+            { pageId: pageId, headerId: headerId },
+            "",
+            "#" + pageId
+        );
 
-        if (headerId && document.getElementById(headerId)) {
-            document.getElementById(headerId).classList.remove("hidden");
-        }
+    } else {
 
-        document.getElementById(pageId).classList.remove("hidden");
+        history.replaceState(
+            { pageId: "home", headerId: "" },
+            "",
+            window.location.pathname
+        );
+
     }
 }
 
 restoreLastPage();
+
+// ========================================
+// INITIALIZE HOME PAGE HISTORY
+// ========================================
+if (!history.state) {
+    history.replaceState(
+        { pageId: "home", headerId: "" },
+        "",
+        window.location.pathname
+    );
+}
     
 // ========================================
 // CLIENT REGISTRATION
