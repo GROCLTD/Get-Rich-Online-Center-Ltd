@@ -709,14 +709,16 @@ footer {
                 Enter the 6-digit verification code sent to your email.
             </p>
 
-            <input
-                type="text"
-                id="login_otp"
-                placeholder="Enter 6-digit OTP"
-                maxlength="6"
-                inputmode="numeric"
-                autocomplete="one-time-code"
-            >
+      <div class="otp-inputs">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+           <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+      </div>
+
+<input type="hidden" id="login_otp">
 
             <label class="trust-device-option">
             <input type="checkbox" id="trust_device">
@@ -1521,22 +1523,101 @@ async function verifyLoginOtp() {
 }
 
 // ========================================
-// RESEND LOGIN OTP
+// OTP SIX DIGIT INPUTS
 // ========================================
+const otpDigits = document.querySelectorAll(".otp-digit");
+
+otpDigits.forEach((input, index) => {
+
+    input.addEventListener("input", () => {
+
+        input.value = input.value.replace(/[^0-9]/g, "").slice(0, 1);
+
+        if (input.value && index < otpDigits.length - 1) {
+            otpDigits[index + 1].focus();
+        }
+
+        updateOtpValue();
+    });
+
+    input.addEventListener("keydown", (event) => {
+
+        if (event.key === "Backspace" && !input.value && index > 0) {
+            otpDigits[index - 1].focus();
+        }
+
+    });
+
+    input.addEventListener("paste", (event) => {
+
+        event.preventDefault();
+
+        const pasted = event.clipboardData
+            .getData("text")
+            .replace(/[^0-9]/g, "")
+            .slice(0, 6);
+
+        pasted.split("").forEach((digit, i) => {
+            otpDigits[i].value = digit;
+        });
+
+        updateOtpValue();
+
+        const nextIndex = Math.min(pasted.length, 5);
+        otpDigits[nextIndex].focus();
+    });
+
+});
+
+function updateOtpValue() {
+
+    document.getElementById("login_otp").value =
+        Array.from(otpDigits)
+            .map(input => input.value)
+            .join("");
+}
+
+// RESET ALL OTP BOXES
+function resetOtpInputs() {
+
+    document.querySelectorAll(".otp-digit").forEach(input => {
+        input.value = "";
+    });
+
+    document.getElementById("login_otp").value = "";
+
+    document.querySelector(".otp-digit")?.focus();
+}
+    
+// ========================================
+// RESEND LOGIN OTP - 60 SECONDS COOLDOWN
+// ========================================
+let resendOtpTimer = null;
+let resendOtpSeconds = 0;
 
 async function resendLoginOtp() {
 
     if (!pendingLogin) {
         document.getElementById("login_message").textContent =
             "Please start login again.";
-
         return;
     }
 
-    const message =
-        document.getElementById("login_message");
+    if (resendOtpSeconds > 0) {
+        return;
+    }
+
+    const message = document.getElementById("login_message");
+
+    const resendButton = document.querySelector(
+        '#otp_form button[onclick="resendLoginOtp()"]'
+    );
 
     message.textContent = "Sending a new verification code...";
+
+    if (resendButton) {
+        resendButton.disabled = true;
+    }
 
     const { data, error } = await db.functions.invoke(
         "login-otp",
@@ -1550,20 +1631,53 @@ async function resendLoginOtp() {
         }
     );
 
-    if (error) {
-        message.textContent = "Unable to resend verification code.";
-        return;
-    }
+    if (error || !data || !data.success) {
 
-    if (!data || !data.success) {
         message.textContent =
             data?.message || "Unable to resend verification code.";
 
+        if (resendButton) {
+            resendButton.disabled = false;
+        }
+
         return;
     }
 
-    message.textContent = "A new verification code has been sent.";
+    message.textContent =
+        "A new verification code has been sent.";
+
     document.getElementById("login_otp").value = "";
+
+    // START 60 SECOND COOLDOWN
+    resendOtpSeconds = 60;
+
+    if (resendButton) {
+        resendButton.disabled = true;
+        resendButton.textContent = "Resend OTP (60s)";
+    }
+
+    clearInterval(resendOtpTimer);
+
+    resendOtpTimer = setInterval(() => {
+
+        resendOtpSeconds--;
+
+        if (resendButton) {
+            resendButton.textContent =
+                `Resend OTP (${resendOtpSeconds}s)`;
+        }
+
+        if (resendOtpSeconds <= 0) {
+
+            clearInterval(resendOtpTimer);
+
+            if (resendButton) {
+                resendButton.disabled = false;
+                resendButton.textContent = "Resend OTP";
+            }
+        }
+
+    }, 1000);
 }
 
 // ========================================
