@@ -1374,6 +1374,47 @@ async function completeVerifiedLogin() {
 }
 
 // ========================================
+// OTP RESEND COUNTDOWN
+// ========================================
+
+let resendOtpTimer = null;
+let resendOtpSeconds = 0;
+
+function startResendOtpCountdown() {
+
+    const resendButton = document.querySelector(
+        '#otp_form button[onclick="resendLoginOtp()"]'
+    );
+
+    if (!resendButton) return;
+
+    clearInterval(resendOtpTimer);
+
+    resendOtpSeconds = 60;
+    resendButton.disabled = true;
+    resendButton.textContent = "Resend OTP (60s)";
+
+    resendOtpTimer = setInterval(() => {
+
+        resendOtpSeconds--;
+
+        if (resendOtpSeconds <= 0) {
+
+            clearInterval(resendOtpTimer);
+
+            resendButton.disabled = false;
+            resendButton.textContent = "Resend OTP";
+
+            return;
+        }
+
+        resendButton.textContent =
+            `Resend OTP (${resendOtpSeconds}s)`;
+
+    }, 1000);
+}
+
+// ========================================
 // CLIENT LOGIN
 // ========================================
 async function login() {
@@ -1436,18 +1477,20 @@ async function login() {
         return;
     }
 
-    // SHOW OTP FORM  
-    document.getElementById("login_form").classList.add("hidden");  
+    // SHOW OTP FORM
+    document.getElementById("login_form").classList.add("hidden");
 
-    document.getElementById("login_links").classList.add("hidden");  
+    document.getElementById("login_links").classList.add("hidden");
 
-    document.getElementById("otp_form").classList.remove("hidden");  
-  
-    document.querySelector("#login_page h2").classList.add("hidden");  
+    resetOtpInputs();
 
-    message.textContent = "Verification code sent to your email.";  
+    document.getElementById("otp_form").classList.remove("hidden");
 
-    document.getElementById("login_otp").value = "";
+    document.querySelector("#login_page h2").classList.add("hidden");
+
+    message.textContent = "Verification code sent to your email.";
+   
+    startResendOtpCountdown();
 }
 
 // ========================================
@@ -1590,11 +1633,8 @@ function resetOtpInputs() {
 }
     
 // ========================================
-// RESEND LOGIN OTP - 60 SECONDS COOLDOWN
+// RESEND LOGIN OTP
 // ========================================
-let resendOtpTimer = null;
-let resendOtpSeconds = 0;
-
 async function resendLoginOtp() {
 
     if (!pendingLogin) {
@@ -1646,38 +1686,10 @@ async function resendLoginOtp() {
     message.textContent =
         "A new verification code has been sent.";
 
-    document.getElementById("login_otp").value = "";
+    resetOtpInputs();
 
-    // START 60 SECOND COOLDOWN
-    resendOtpSeconds = 60;
-
-    if (resendButton) {
-        resendButton.disabled = true;
-        resendButton.textContent = "Resend OTP (60s)";
-    }
-
-    clearInterval(resendOtpTimer);
-
-    resendOtpTimer = setInterval(() => {
-
-        resendOtpSeconds--;
-
-        if (resendButton) {
-            resendButton.textContent =
-                `Resend OTP (${resendOtpSeconds}s)`;
-        }
-
-        if (resendOtpSeconds <= 0) {
-
-            clearInterval(resendOtpTimer);
-
-            if (resendButton) {
-                resendButton.disabled = false;
-                resendButton.textContent = "Resend OTP";
-            }
-        }
-
-    }, 1000);
+    // START COUNTDOWN
+    startResendOtpCountdown();
 }
 
 // ========================================
