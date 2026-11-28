@@ -405,6 +405,21 @@ footer {
     text-align: center;
     padding: 25px 10px;
 }
+
+/* TRUST DEVICE */
+.trust-device-option {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.trust-device-option input {
+    width: auto;
+    margin: 0;
+}
+    
 </style>
     
 </head>
@@ -703,13 +718,9 @@ footer {
                 autocomplete="one-time-code"
             >
 
-            <label style="display:block; margin:15px 0;">
-                <input
-                    type="checkbox"
-                    id="trust_device"
-                    style="width:auto;"
-                >
-                Trust this device for 7 Days
+            <label class="trust-device-option">
+            <input type="checkbox" id="trust_device">
+            <span>Trust this device for 7 Days</span>
             </label>
 
             <button onclick="verifyLoginOtp()">
